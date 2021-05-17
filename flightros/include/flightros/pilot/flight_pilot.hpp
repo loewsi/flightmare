@@ -6,6 +6,9 @@
 // ros
 #include <nav_msgs/Odometry.h>
 #include <ros/ros.h>
+#include <cv_bridge/cv_bridge.h>
+#include <image_transport/image_transport.h>
+#include <sensor_msgs/CompressedImage.h>
 
 // rpg quadrotor
 #include <autopilot/autopilot_helper.h>
@@ -19,6 +22,7 @@
 #include "flightlib/common/types.hpp"
 #include "flightlib/objects/quadrotor.hpp"
 #include "flightlib/sensors/rgb_camera.hpp"
+#include "flightlib/objects/static_gate.hpp"
 
 using namespace flightlib;
 
@@ -42,8 +46,10 @@ class FlightPilot {
   // ros nodes
   ros::NodeHandle nh_;
   ros::NodeHandle pnh_;
+  image_transport::ImageTransport it_;
 
   // publisher
+  image_transport::Publisher depth_pub;
 
   // subscriber
   ros::Subscriber sub_state_est_;
@@ -55,6 +61,9 @@ class FlightPilot {
   std::shared_ptr<Quadrotor> quad_ptr_;
   std::shared_ptr<RGBCamera> rgb_camera_;
   QuadState quad_state_;
+  std::string object_id; // Unique name
+  std::string prefab_id; // Name of the prefab in the Assets/Resources folder
+  std::shared_ptr<StaticGate> gate;
 
   // Flightmare(Unity3D)
   std::shared_ptr<UnityBridge> unity_bridge_ptr_;
@@ -63,6 +72,7 @@ class FlightPilot {
   bool unity_render_{false};
   RenderMessage_t unity_output_;
   uint16_t receive_id_{0};
+  FrameID frame_id;
 
   // auxiliary variables
   Scalar main_loop_freq_{50.0};

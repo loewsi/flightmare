@@ -5,6 +5,7 @@ namespace flightros {
 FlightPilot::FlightPilot(const ros::NodeHandle &nh, const ros::NodeHandle &pnh)
   : nh_(nh),
     pnh_(pnh),
+    it_(pnh),
     scene_id_(UnityScene::WAREHOUSE),
     unity_ready_(false),
     unity_render_(false),
@@ -21,6 +22,16 @@ FlightPilot::FlightPilot(const ros::NodeHandle &nh, const ros::NodeHandle &pnh)
   // quad initialization
   quad_ptr_ = std::make_shared<Quadrotor>();
 
+  // gate initialization
+  object_id = "unity_gate"; // Unique name
+  prefab_id = "rpg_gate"; // Name of the prefab in the Assets/Resources folder
+  gate = std::make_shared<StaticGate>(object_id, prefab_id);
+  gate->setPosition(Eigen::Vector3f(1.7, 1.5, -0.5));
+  gate->setRotation(
+    Quaternion(std::cos(0.0 * M_PI_2), 0.0, 0.0, std::sin(0.0 * M_PI_2)));
+  
+
+
   // add mono camera
   rgb_camera_ = std::make_shared<RGBCamera>();
   Vector<3> B_r_BC(0.0, 0.0, 0.3);
@@ -30,6 +41,8 @@ FlightPilot::FlightPilot(const ros::NodeHandle &nh, const ros::NodeHandle &pnh)
   rgb_camera_->setWidth(720);
   rgb_camera_->setHeight(480);
   rgb_camera_->setRelPose(B_r_BC, R_BC);
+  rgb_camera_->setPostProcesscing(
+    std::vector<bool>{true, false, false});
   quad_ptr_->addRGBCamera(rgb_camera_);
 
   // initialization
@@ -38,12 +51,14 @@ FlightPilot::FlightPilot(const ros::NodeHandle &nh, const ros::NodeHandle &pnh)
 
 
   // initialize subscriber call backs
-  sub_state_est_ = nh_.subscribe("flight_pilot/state_estimate", 1,
+  sub_state_est_ = nh_.subscribe("ground_truth/odometry", 1,
                                  &FlightPilot::poseCallback, this);
 
   timer_main_loop_ = nh_.createTimer(ros::Rate(main_loop_freq_),
                                      &FlightPilot::mainLoopCallback, this);
 
+
+  depth_pub = it_.advertise("depth", 1);
 
   // wait until the gazebo and unity are loaded
   ros::Duration(5.0).sleep();
@@ -51,6 +66,7 @@ FlightPilot::FlightPilot(const ros::NodeHandle &nh, const ros::NodeHandle &pnh)
   // connect unity
   setUnity(unity_render_);
   connectUnity();
+  frame_id = 0;
 }
 
 FlightPilot::~FlightPilot() {}
@@ -73,7 +89,21 @@ void FlightPilot::poseCallback(const nav_msgs::Odometry::ConstPtr &msg) {
 }
 
 void FlightPilot::mainLoopCallback(const ros::TimerEvent &event) {
-  // empty
+  unity_bridge_ptr_->getRender(frame_id);
+  unity_bridge_ptr_->handleOutput();
+
+  cv::Mat img;
+
+  ros::Time timestamp = ros::Time::now();
+
+  rgb_camera_->getDepthMap(img);
+  sensor_msgs::ImagePtr depth_msg = 
+    cv_bridge::CvImage(std_msgs::Header(), "32FC1", img).toImageMsg();
+  depth_msg->header.stamp = timestamp;
+  depth_msg->header.frame_id = "camera";
+  depth_pub.publish(depth_msg);
+
+  frame_id += 1;
 }
 
 bool FlightPilot::setUnity(const bool render) {
@@ -82,6 +112,7 @@ bool FlightPilot::setUnity(const bool render) {
     // create unity bridge
     unity_bridge_ptr_ = UnityBridge::getInstance();
     unity_bridge_ptr_->addQuadrotor(quad_ptr_);
+    unity_bridge_ptr_->addStaticObject(gate);
     ROS_INFO("[%s] Unity Bridge is created.", pnh_.getNamespace().c_str());
   }
   return true;
