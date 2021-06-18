@@ -28,20 +28,22 @@ FlightPilot::FlightPilot(const ros::NodeHandle &nh, const ros::NodeHandle &pnh)
   object_id2 = "unity_gate2"; // Unique name
   object_id3 = "unity_gate3"; // Unique name
   gate = std::make_shared<StaticGate>(object_id, prefab_id);
-  gate->setPosition(Eigen::Vector3f(1.7, 1.5, 8.5));
+  gate->setPosition(Eigen::Vector3f(0.3, 1.5, 8.5));
+  // gate->setRotation(
+  //   Quaternion(0.4254518, 0.4254518, 0.237339, 0.762661));
   gate->setRotation(
-    Quaternion(std::cos(0.25 * M_PI_2), 0.0, 0.0, std::sin(0.25 * M_PI_2)));
+    Quaternion(0, 0.3250816, -0.3250816, 0.8880562));
 
   gate2 = std::make_shared<StaticGate>(object_id2, prefab_id);
-  gate2->setPosition(Eigen::Vector3f(-2, 5.5, 8.5));
+  gate2->setPosition(Eigen::Vector3f(-0.3, 5.5, 8.5));
   gate2->setRotation(
-    Quaternion(std::cos(-0.25 * M_PI_2), 0.0, 0.0, std::sin(-0.25 * M_PI_2)));
+    Quaternion(0.4254518, 0.4254518, 0.237339, 0.762661));
 
   gate3 = std::make_shared<StaticGate>(object_id3, prefab_id);
   //gate->setPosition(Eigen::Vector3f(1.7, 1.5, -0.5));
-  gate3->setPosition(Eigen::Vector3f(1.7, 9.0, 8.5));
+  gate3->setPosition(Eigen::Vector3f(0.3, 9.0, 8.5));
   gate3->setRotation(
-    Quaternion(std::cos(0.25 * M_PI_2), 0.0, 0.0, std::sin(0.25 * M_PI_2)));
+    Quaternion(0.4254518, 0.4254518, 0.237339, 0.762661));
   
 
 
