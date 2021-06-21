@@ -27,10 +27,14 @@ FlightPilot::FlightPilot(const ros::NodeHandle &nh, const ros::NodeHandle &pnh)
   prefab_id = "rpg_gate"; // Name of the prefab in the Assets/Resources folder
   object_id2 = "unity_gate2"; // Unique name
   object_id3 = "unity_gate3"; // Unique name
+  object_id4 = "unity_gate4"; // Unique name
+  object_id5 = "unity_gate5"; // Unique name
+  object_id6 = "unity_gate6"; // Unique name
+  object_id7 = "unity_gate7"; // Unique name
+  object_id8 = "unity_gate8"; // Unique name
+
   gate = std::make_shared<StaticGate>(object_id, prefab_id);
   gate->setPosition(Eigen::Vector3f(0.3, 1.5, 8.5));
-  // gate->setRotation(
-  //   Quaternion(0.4254518, 0.4254518, 0.237339, 0.762661));
   gate->setRotation(
     Quaternion(0, 0.3250816, -0.3250816, 0.8880562));
 
@@ -40,9 +44,33 @@ FlightPilot::FlightPilot(const ros::NodeHandle &nh, const ros::NodeHandle &pnh)
     Quaternion(0.4254518, 0.4254518, 0.237339, 0.762661));
 
   gate3 = std::make_shared<StaticGate>(object_id3, prefab_id);
-  //gate->setPosition(Eigen::Vector3f(1.7, 1.5, -0.5));
   gate3->setPosition(Eigen::Vector3f(0.3, 9.0, 8.5));
   gate3->setRotation(
+    Quaternion(0.4254518, 0.4254518, 0.237339, 0.762661));
+
+  gate4 = std::make_shared<StaticGate>(object_id4, prefab_id);
+  gate4->setPosition(Eigen::Vector3f(1.3, 1.0, 6.5));
+  gate4->setRotation(
+    Quaternion(0.4254518, 0.4254518, 0.237339, 0.762661));
+
+  gate5 = std::make_shared<StaticGate>(object_id5, prefab_id);
+  gate5->setPosition(Eigen::Vector3f(-0.7, 7.0, 6.1));
+  gate5->setRotation(
+    Quaternion(0.4254518, 0.4254518, 0.237339, 0.762661));
+
+  gate6 = std::make_shared<StaticGate>(object_id6, prefab_id);
+  gate6->setPosition(Eigen::Vector3f(0.4, 9.0, 7.7));
+  gate6->setRotation(
+    Quaternion(0.4254518, 0.4254518, 0.237339, 0.762661));
+
+  gate7 = std::make_shared<StaticGate>(object_id7, prefab_id);
+  gate7->setPosition(Eigen::Vector3f(-0.6, 3.0, 5.8));
+  gate7->setRotation(
+    Quaternion(0.4254518, 0.4254518, 0.237339, 0.762661));
+
+  gate8 = std::make_shared<StaticGate>(object_id8, prefab_id);
+  gate8->setPosition(Eigen::Vector3f(-0.8, 2.0, 7.5));
+  gate8->setRotation(
     Quaternion(0.4254518, 0.4254518, 0.237339, 0.762661));
   
 
@@ -104,6 +132,7 @@ void FlightPilot::poseCallback(const nav_msgs::Odometry::ConstPtr &msg) {
 }
 
 void FlightPilot::mainLoopCallback(const ros::TimerEvent &event) {
+  /*
   unity_bridge_ptr_->getRender(frame_id);
   unity_bridge_ptr_->handleOutput();
 
@@ -119,6 +148,7 @@ void FlightPilot::mainLoopCallback(const ros::TimerEvent &event) {
   depth_pub.publish(depth_msg);
 
   frame_id += 1;
+  */
 }
 
 bool FlightPilot::setUnity(const bool render) {
@@ -130,6 +160,11 @@ bool FlightPilot::setUnity(const bool render) {
     unity_bridge_ptr_->addStaticObject(gate);
     unity_bridge_ptr_->addStaticObject(gate2);
     unity_bridge_ptr_->addStaticObject(gate3);
+    unity_bridge_ptr_->addStaticObject(gate4);
+    unity_bridge_ptr_->addStaticObject(gate5);
+    unity_bridge_ptr_->addStaticObject(gate6);
+    unity_bridge_ptr_->addStaticObject(gate7);
+    unity_bridge_ptr_->addStaticObject(gate8);
     ROS_INFO("[%s] Unity Bridge is created.", pnh_.getNamespace().c_str());
   }
   return true;

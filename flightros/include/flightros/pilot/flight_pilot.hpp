@@ -61,13 +61,25 @@ class FlightPilot {
   std::shared_ptr<Quadrotor> quad_ptr_;
   std::shared_ptr<RGBCamera> rgb_camera_;
   QuadState quad_state_;
+
   std::string object_id; // Unique name
   std::string object_id2; // Unique name
   std::string object_id3; // Unique name
+  std::string object_id4; // Unique name
+  std::string object_id5; // Unique name
+  std::string object_id6; // Unique name
+  std::string object_id7; // Unique name
+  std::string object_id8; // Unique name
+
   std::string prefab_id; // Name of the prefab in the Assets/Resources folder
   std::shared_ptr<StaticGate> gate;
   std::shared_ptr<StaticGate> gate2;
   std::shared_ptr<StaticGate> gate3;
+  std::shared_ptr<StaticGate> gate4;
+  std::shared_ptr<StaticGate> gate5;
+  std::shared_ptr<StaticGate> gate6;
+  std::shared_ptr<StaticGate> gate7;
+  std::shared_ptr<StaticGate> gate8;
 
   // Flightmare(Unity3D)
   std::shared_ptr<UnityBridge> unity_bridge_ptr_;
