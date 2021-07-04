@@ -70,6 +70,26 @@ class FlightPilot {
   std::string object_id6; // Unique name
   std::string object_id7; // Unique name
   std::string object_id8; // Unique name
+  std::string object_id9; // Unique name
+  std::string object_id10; // Unique name
+  std::string object_id11; // Unique name
+  std::string object_id12; // Unique name
+
+  std::string object_id13; // Unique name
+  std::string object_id14; // Unique name
+  std::string object_id15; // Unique name
+  std::string object_id16; // Unique name
+  std::string object_id17; // Unique name
+  std::string object_id18; // Unique name
+
+  std::string object_id19; // Unique name
+  std::string object_id20; // Unique name
+  std::string object_id21; // Unique name
+  std::string object_id22; // Unique name
+  std::string object_id23; // Unique name
+  std::string object_id24; // Unique name
+
+
 
   std::string prefab_id; // Name of the prefab in the Assets/Resources folder
   std::shared_ptr<StaticGate> gate;
@@ -80,6 +100,25 @@ class FlightPilot {
   std::shared_ptr<StaticGate> gate6;
   std::shared_ptr<StaticGate> gate7;
   std::shared_ptr<StaticGate> gate8;
+  std::shared_ptr<StaticGate> gate9;
+  std::shared_ptr<StaticGate> gate10;
+  std::shared_ptr<StaticGate> gate11;
+  std::shared_ptr<StaticGate> gate12;
+
+  std::shared_ptr<StaticGate> gate13;
+  std::shared_ptr<StaticGate> gate14;
+  std::shared_ptr<StaticGate> gate15;
+  std::shared_ptr<StaticGate> gate16;
+  std::shared_ptr<StaticGate> gate17;
+  std::shared_ptr<StaticGate> gate18;
+
+  std::shared_ptr<StaticGate> gate19;
+  std::shared_ptr<StaticGate> gate20;
+  std::shared_ptr<StaticGate> gate21;
+  std::shared_ptr<StaticGate> gate22;
+  std::shared_ptr<StaticGate> gate23;
+  std::shared_ptr<StaticGate> gate24;
+
 
   // Flightmare(Unity3D)
   std::shared_ptr<UnityBridge> unity_bridge_ptr_;
